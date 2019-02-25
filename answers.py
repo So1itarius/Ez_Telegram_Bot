@@ -3,7 +3,7 @@ from datetime import datetime
 import ephem
 
 def get_answer(st):
-    #import ephem
+ 
     try:
         today = datetime.now(tz=None).strftime('%Y/%m/%d')
         print("Сегодня", today)
