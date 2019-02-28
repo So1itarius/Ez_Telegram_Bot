@@ -5,6 +5,7 @@ from time import sleep
 
 from answers import get_answer
 from settings import token_for_bot
+from translator import translator
 
 update_id = None
 
@@ -55,7 +56,7 @@ def echo(bot):
             if update.message.text == ("/start"):
                 greet_user(update)
             if update.message.text.split()[0] == ("/planet"):
-                update.message.reply_text(get_answer(update.message.text.split()[1]))
+                update.message.reply_text(get_answer(translator(update.message.text.split()[1].capitalize())))
             else:
                 update.message.reply_text(update.message.text)
 
