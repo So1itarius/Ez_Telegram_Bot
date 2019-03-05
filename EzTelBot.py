@@ -4,6 +4,7 @@ from telegram.error import NetworkError, Unauthorized
 from time import sleep
 
 from answers import get_answer, next_full_moon, calc, wordcount
+from minigame import new_cities_list, game_move
 from settings import token_for_bot
 from translator import translator
 
@@ -39,10 +40,14 @@ def main():
 
 
 def greet_user(update):
-    text = 'Вызван /start, ВНИМАНИЕ БОТ НЕ ЗАСТРАХОВА ОТ ВВОДА ВСЯКОЙ ХУЙНИ!'
-    print(text)
+    text = 'Вызван /start, ВНИМАНИЕ БОТ НЕ ЗАСТРАХОВАН ОТ ВВОДА ВСЯКОЙ ХУЙНИ!'
+
+    new_cities_list(update.message.chat.id)  # Формируем словарь с городами в момент начала пользования чатом
     update.message.reply_text(text)
 
+
+# 49938425 - пример id, который меняется с каждой новой сессии (update_id)
+# 144091076 - неизменный id (update.message.chat.id)
 
 def echo(bot):
     """Echo the message the user sent."""
@@ -56,16 +61,24 @@ def echo(bot):
             if update.message.text == ("/start"):
                 greet_user(update)
             elif update.message.text.split()[0] == ("/planet"):
-                update.message.reply_text(get_answer(translator(update.message.text.split()[1].capitalize())))
+                update.message.reply_text(get_answer(
+                    translator(
+                        update.message.text.split()[1].capitalize())))
             elif update.message.text.split()[0] == ("/next_full_moon"):
-                update.message.reply_text(next_full_moon(update.message.text.split()[1]))
+                update.message.reply_text(next_full_moon(
+                    update.message.text.split()[1]))
             elif update.message.text.split(' ', maxsplit=1)[0] == ("/calc"):
-                update.message.reply_text(calc(update.message.text.split(' ', maxsplit=1)[1]))
+                update.message.reply_text(calc(
+                    update.message.text.split(' ', maxsplit=1)[1]))
             elif update.message.text.split(' ', maxsplit=1)[0] == ("/wordcount"):
-                update.message.reply_text(wordcount(update.message.text.split(' ', maxsplit=1)[1]))
+                update.message.reply_text(wordcount(
+                    update.message.text.split(' ', maxsplit=1)[1]))
+            elif update.message.text.split(' ', maxsplit=1)[0] == ("/cities"):
+                update.message.reply_text(game_move(
+                    update.message.chat.id, update.message.text.split(' ', maxsplit=1)[1]))
 
             else:
-                update.message.reply_text(update.message.text,)
+                update.message.reply_text(update.message.text, )
 
     except IndexError:
         update.message.reply_text("У этой команды должен быть 1 аргумент")
