@@ -6,13 +6,13 @@ game_dict = {}
 
 
 # Парсим сайт с городами, создавая список. Присваиваем список пользователю
-def new_cities_list(chat_id):
+def new_cities_list():
     game_page = requests.get("http://xn----7sbiew6aadnema7p.xn--p1ai/alphabet.php")
     sel = Selector(game_page.text)
 
     cities = sel.css('.common-text ul a::text').extract()
+    return cities
 
-    game_dict[chat_id] = cities
 
 
 def game_move(chat_id, city):
