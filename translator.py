@@ -1,8 +1,8 @@
 import requests
 
-from settings import token_for_yandex_translator
+from settings import TOKEN_FOR_YANDEX_TRANSLATOR
 
 
 def translator(text):
     url = 'https://translate.yandex.net/api/v1.5/tr.json/translate?'
-    return requests.post(url, data={'key': token_for_yandex_translator, 'text': text, 'lang': 'ru-en'}).json()['text'][0]
+    return requests.post(url, data={'key': TOKEN_FOR_YANDEX_TRANSLATOR, 'text': text, 'lang': 'ru-en'}).json()['text'][0]
